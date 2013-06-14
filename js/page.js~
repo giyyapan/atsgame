@@ -1,0 +1,1024 @@
+var PageElement  = Class.sub();
+var PageElement = Class.sub();
+PageElement.prototype._init = function(type,id,container,info){
+	if(!id) return;
+	if($("#"+id)){
+		$("#"+id).remove();
+		//console.log("remove id "+id );
+	}
+	var htmlText = "<"+type;
+	htmlText += " id='"+id+"'";
+	if(info && info.class) htmlText += " class='"+info.class+"'";
+	if(type == "img"){
+		if(info && info.src)
+			htmlText+= ('src="' + info.src + '"');
+		htmlText += "/>";
+	}else{
+		htmlText += ">";
+		if(info && info.text) htmlText += info.text;
+		htmlText += "</"+type+">";
+		
+	}
+	//console.log("new eleent : "+id);
+	if(container){
+		//console.log(container.J)
+		container.J.append(htmlText);
+	}else{
+		$("body").append(htmlText);
+	}
+	this.id = id;
+	this.container = container;
+	this.J = $("#"+id);
+	this.node = this.J[0];
+
+	if(info && info.z) this.J.css("z-index",info.z);
+}
+var PageDiv = PageElement.sub();
+PageDiv.prototype._init = function (id,container,info){
+	PageDiv.parent.call(this,"div",id,container,info);
+}
+var PageButton = PageElement.sub();
+PageButton.prototype._init = function (id,container,info){
+	if (!info || !info.text){
+		if (!info){
+			info = {};
+		}
+		info.text = id;
+	}
+	PageButton.parent.call(this,"button",id,container,info);
+	if(info && info.class){
+		this.className = info.class;
+	}
+}
+var CanvasScreen = Class.sub();
+CanvasScreen.prototype._init = function (game){
+	this.game = game;
+	this.J = $("#canvasScreen");
+}
+var MainScreen = Class.sub();
+MainScreen.prototype._init = function (game){
+	this.game = game;
+	this.J = $("#mainScreen");
+	this.screenSize = game.screenSize;
+}
+MainScreen.prototype.startStage = function (stageName){
+	this.hide();
+	$("#canvasScreen").show();
+	console.log(stageName);
+	this.game.startStage(stageName);
+}
+MainScreen.prototype.show = function (){
+	//this.J.show();
+	this.J.fadeIn("fast")
+}
+MainScreen.prototype.hide = function (){
+	//this.J.hide();
+	this.J.fadeOut("fast")
+}
+MainScreen.prototype.showMainMenu = function (){
+	this.show();
+	this.hidePages();
+	this.mainPage = new MainPage(this);
+	this.mainPage.show();
+}
+MainScreen.prototype.showStory = function (storyName){
+	this.show();
+	this.hidePages();
+	var storyData = db.story.getDataByName(storyName);
+	this.storyPage = new StoryPage(this,storyData);
+	this.storyPage.show();
+}
+MainScreen.prototype.showChalenge = function (){
+	this.show();
+	this.hidePages();
+	this.chalengePage = new ChalengePage(this);
+	this.chalengePage.show();
+}
+MainScreen.prototype.showSystem = function (){
+	this.show();
+	this.hidePages();
+	this.systemPage = new SystemPage(this);
+	this.systemPage.show();
+}
+MainScreen.prototype.showMap = function (){
+	this.show();
+	this.hidePages();
+	if(Static.getUserData.firstUse){
+		this.storyPage = new StoryPage(this);
+		this.storyPage.show();
+	}else{
+		this.mapPage = new MapPage(this);
+		this.mapPage.show();
+	}
+}
+
+MainScreen.prototype.showEquip = function (){
+	this.show();
+	this.hidePages();
+	this.equipPage = new EquipPage(this);
+	this.equipPage.show();
+}
+MainScreen.prototype.hidePages = function (){
+	$(".page").fadeOut("fast");
+}
+MainScreen.prototype.showWinPage = function (stageName,stageResult){
+	console.error("show win  page");
+	this.show();
+	this.hidePages();
+	this.winPage = new WinPage(stageName,this,stageResult);
+	this.winPage.show();
+}
+MainScreen.prototype.showLosePage = function (stageName){
+	this.show();
+	this.hidePages();
+	this.losepage = new LosePage(stageName,this);
+	this.losepage.show();
+}
+
+var WinPage = PageDiv.sub();
+WinPage.prototype._init = function (stageName,screen,stageResult){
+	this.screen = screen;
+	this.parent.call(this,"winPage",screen,{class:"page"});
+	this.title = new PageDiv("winPageTitle",this);
+	this.resultBox = new PageDiv("winPageResultBox",this);
+	this.rewardViewer = new PageDiv("winPageRewardViewer",this);
+	this.retryButton = new PageButton("winPageRetryButton",this,{text:"Retry"});
+	this.continueButton = new PageButton("winPageContinueButton",this,{text:"Continue"});
+	this.handleReward(stageName,stageResult);
+	var self = this;
+	this.continueButton.node.onclick = function (){
+		self.screen.showMap();
+	} ;
+	this.retryButton.node.onclick =  function (){
+		self.screen.startStage(stageName);
+	}
+}
+WinPage.prototype.handleReward = function (stageName,stageResult){
+	this.resultBox.score = new PageElement(
+		"h2","winPageScore",this.resultBox,{text:"分数 ： "+stageResult.score});
+
+	this.resultBox.time = new PageElement(
+		"h2","winPageTime",this.resultBox,{text:"通关时间 ： "+stageResult.time+" sec"});
+	this.resultBox.highScore = new PageElement(
+		"h2","winPageHighScore",this.resultBox);
+	
+	if(!stageName) return;
+	var score = stageResult.score;
+	var stageData = db.stage.getDataByName(stageName);
+	var stageNo = stageData.stageNo;
+	var userData = Static.getUserData();
+	if(!userData.highScore[stageNo]
+	   || score > userData.highScore[stageNo]){
+		userData.highScore[stageNo] = score;
+	}
+
+	this.resultBox.highScore.J.html("最高分 : "+userData.highScore[stageNo]);
+	
+	if(userData.clearedStageNo >= stageData.stageNo){
+		//if it has been cleared, skip the reward
+		console.log("skip","cleared Stage",userData.clearedStageNo,stageData.stageNo);
+		Static.updateUserData();
+		return;
+	}
+	console.log("enter!!!!!!!!!!!!");
+	userData.clearedStageNo = stageData.stageNo;
+	var reward = stageData.reward;
+	
+	if(!reward
+	   || (!reward.tower && !reward.spell && !reward.elf)){
+		console.log("no reward");
+		Static.updateUserData();
+		return;
+	}
+	this.rewardViewer.title = new PageElement("h2","rewardViewerTitle",this.rewardViewer,{text:"解锁新物件:"});
+	this.rewardViewer.elfBox = new PageDiv("rewardViewerElfBox",this.rewardViewer,{text:"精灵:"});
+	this.rewardViewer.towerBox = new PageDiv("rewardViewerTowerBox",this.rewardViewer,{text:"守护塔:"});
+	this.rewardViewer.spellBox = new PageDiv("rewardViewerSpellBox",this.rewardViewer,{text:"魔法:"});
+	this.rewardViewer.elfBox.J.hide();
+	this.rewardViewer.towerBox.J.hide();
+	this.rewardViewer.spellBox.J.hide();
+	
+	var self = this;
+	
+	if(reward.elf){
+		for (var i = 0; i < reward.elf.length; i++){
+			var elfName = reward.elf[i];
+			userData.availElves.push(elfName);
+			if(userData.elves.length < 3){
+				userData.elves.push(elfName);
+			}
+			var elfData = db.elf.getDataByName(elfName);
+			addNewItem(elfData.intro.name,
+					   elfData.buttonPic,
+					   this.rewardViewer.elfBox);
+			this.rewardViewer.elfBox.J.show();
+		}
+	}
+	if(reward.spell){
+		for(var elfName in reward.spell){
+			for (var i = 0; i < reward.spell[elfName].length; i++){
+				var spellName = reward.spell[elfName][i];
+				userData.spell[elfName].push(spellName);
+				
+				var spellData = db.elf.getDataByName(elfName).spell[spellName];
+				
+				addNewItem(spellData.intro.name,
+						   spellData.pic,
+						   this.rewardViewer.spellBox);
+				this.rewardViewer.spellBox.J.show();
+			}
+		}
+	}
+		
+	if(reward.tower){
+		for (var i = 0; i < reward.tower.length; i++){
+			var towerName = reward.tower[i];
+			userData.availTowers.push(towerName);
+			if(userData.towers.length < 3){
+				userData.towers.push(towerName);
+			}
+			var towerData = db.tower.getDataByName(towerName);
+
+			addNewItem(towerData.intro.name,
+					   towerData.buttonPic,
+					   this.rewardViewer.towerBox);
+			this.rewardViewer.towerBox.J.show();
+		}
+	}
+	
+	Static.updateUserData();
+
+	function addNewItem(name,img,container){
+		var itemBox = new PageDiv("rewardItemBox"+name,container,{class:"rewardItemBox"});
+		itemBox.img = new PageElement("img","rewardItemImg"+name,itemBox,{class:"rewardItemImg"});
+		itemBox.text = new PageElement("p","rewardItemText"+name ,itemBox,{class:"rewardItemText"});
+		itemBox.img.node.src = img.src;
+		itemBox.text.J.html(name);
+	}
+}
+WinPage.prototype.show = function (){
+	this.J.show();
+}
+var LosePage = PageDiv.sub();
+LosePage.prototype._init = function (stageName,screen){
+	var stageData = db.stage.getDataByName(stageName);
+	var userData = Static.getUserData();
+	if(typeof userData.highScore[stageData.stageNo] == "undefined"){
+		userData.highScore[stageData.stageNo] = -1;
+	}
+	this.screen = screen;
+	this.parent.call(this,"losePage",screen,{class:"page"});
+	this.title = new PageDiv("losePageTitle",this);
+	this.text = new PageElement("p","losePageText",this,{text:"Aria：</br>什么？！我怎么可能会被打败！我不是主角吗！</br></br>Liara:</br>乖啦乖啦～胜败乃兵家常事嘛ω"})
+	this.losePig = new PageElement("img","losePic",this,{src:"./img/mainScreenUI/losePagePic.png"});
+	this.returnButton = new PageButton("losePageReturnButton",this,{text:"Back"});
+	this.retryButton = new PageButton("losePageRetryButton",this,{text:"Retry"});
+	var self = this;
+	
+	this.retryButton.node.onclick =function (){
+		self.screen.startStage(stageName);
+	}
+	this.returnButton.node.onclick = function (){
+		self.screen.showMap();
+	}
+}
+LosePage.prototype.show = function (){
+	this.J.show();
+}
+var MainPage = PageDiv.sub();
+MainPage.prototype._init = function (screen){
+	this.parent.call(this,"mainPage",screen,{class:"page"});
+	this.screen = screen;
+	var	userData = Static.getUserData();
+	this.magicCircle1 = new PageElement("img","mainPageMagicCircle1",this);
+	this.magicCircle1.node.src = img.mainPageMagicCircle.src;
+
+	this.title = new PageElement("h1","mainTitle",this,{text:"Tower Defense"});
+	this.title2 = new PageElement("h2","mainTitle2",this,{text:"Aria the Summoner"});
+	this.buttonList = new PageDiv("mainButtonList",this,{class:"buttonList"});
+	this.magicCircle2 = new PageElement("img","mainPageMagicCircle2",this);
+	this.magicCircle2.node.src = img.mainPageMagicCircle.src;
+
+	var self = this;
+	if(typeof userData.continueStage != "undefined"){
+		this.continueButton = new PageButton("continueButton",this.buttonList,{text:"Continue"});
+		this.continueButton.node.onclick = function (){
+			self.screen.startStage(userData.continueStage);
+		}
+	}
+	this.startButton = new PageButton("startButton",this.buttonList,{text:"Start"});
+	this.chalengeButton = new PageButton("chalengeButton",this.buttonList,{text:"Chalange"});
+	this.chalengeButton.J.hide();
+	
+	this.systemButton = new PageButton("systemButton",this.buttonList,{text:"System"});
+
+	this.startButton.node.onclick = function (){
+		self.screen.showMap();
+	}
+	this.systemButton.node.onclick = function (){
+		self.screen.showSystem();
+	}
+	this.chalengeButton.node.onclick = function (){
+		self.screen.showChalenge();
+	}
+}
+MainPage.prototype.show = function (){
+	//this.buttonList.J.slideDown();
+	//this.J.show();
+	this.magicCircle1.J.hide();
+	this.magicCircle2.J.hide();
+	var self = this;
+	this.buttonList.J.hide();
+	this.J.fadeIn("fast")
+	this.buttonList.J.slideDown("fast",function (){
+		self.magicCircle1.J.fadeIn("fast");
+		self.magicCircle2.J.fadeIn("fast");
+	});
+}
+MainPage.prototype.hide = function (){
+	//this.buttonList.J.slideUp();
+	//this.J.hide();
+	this.J.fadeOut("fast");
+}
+var MapPage = PageDiv.sub();
+MapPage.prototype._init = function (screen){
+	this.mapWidth = 1080;
+	this.mapHeight = 960;
+	this.screen = screen;
+	this.parent.call(this,"mapPage",screen,{class:"page"});
+	var screenSize = screen.screenSize;
+	this.defaultTop = 0
+	if(screenSize.height > this.mapHeight){
+		this.defaultTop = (screenSize.height - this.mapHeight)/2;
+		this.node.style.top = this.defaultTop + "px";
+	}
+	var self = this;
+	
+	this.title = new PageElement("h1","mapTitle",this,{text:"Land Of Miracle"});
+	
+	this.initButtons(screen.screenSize);
+	//console.log(screen,screen.screenSize)
+	this.initPopupWindow(screen.screenSize);
+	this.points = new Array();
+	var userData = Static.getUserData();
+	var mapPointsData = db.map.getDataByName("points");
+	for(var i = 0 ; i < mapPointsData.length ; i++){
+		var pointData = mapPointsData[i];
+		
+		if(i <= userData.clearedStageNo){
+			var newPointButton = new MapPoint(pointData,this,"cleared");
+		}else{
+			if(i == userData.clearedStageNo + 1){
+				var newPointButton = new MapPoint(pointData,this,"next");					}else{
+				var newPointButton = new MapPoint(pointData,this,"locked");					}
+		}
+		this.points.push(newPointButton);
+	}
+	var self = this;
+	this.node.ontouchmove = function (e){
+		e.preventDefault();
+		var touch = e.touches[0];
+		if(self.touchStartData){
+			var newX = -self.touchStartData.x + touch.pageX;
+			var newY = -self.touchStartData.y + touch.pageY;
+			if(newX <=0 && -newX + $(".screen").width() <= self.mapWidth){
+
+				self.node.style.left = newX + "px";
+			}
+			if (newY <=self.defaultTop && -newY + $(".screen").height() - self.defaultTop <= self.mapHeight){
+				self.node.style.top = newY + "px";
+			}
+		}
+	}
+	this.node.ontouchstart = function (e){
+		console.log("a")
+		//e.preventDefault();
+		var nowLeft = Utils.getNumberWithoutPx(self.node.style.left);
+		var nowTop = Utils.getNumberWithoutPx(self.node.style.top)
+		var touch = e.touches[0]
+		if(nowLeft){
+			self.touchStartData = {
+				x:touch.pageX - nowLeft,
+				y:touch.pageY - nowTop,
+			}
+		}else{
+			self.touchStartData = {
+				x:touch.pageX,
+				y:touch.pageY
+			}
+		}
+	}
+	this.node.ontouchend = function (e){
+		//e.preventDefault();
+		delete self.touchStartData;
+	}
+	this.node.onmousemove = function (e){
+		//e.preventDefault();
+		if(self.mouseStartData){
+			var newX = -self.mouseStartData.x + e.pageX;
+			var newY = -self.mouseStartData.y + e.pageY;
+			if(newX <=0 && -newX + $(".screen").width() <= self.mapWidth){
+
+				self.node.style.left = newX + "px";
+			}
+			if (newY <=0 && -newY + $(".screen").height() <= self.mapHeight){
+				self.node.style.top = newY + "px";
+			}
+		}
+
+	}
+	this.node.onmousedown = function (e){
+		e.preventDefault();
+		//var touch = e.touches[0];
+		var nowLeft = Utils.getNumberWithoutPx(self.node.style.left);
+		var nowTop = Utils.getNumberWithoutPx(self.node.style.top)
+		if(nowLeft){
+			self.mouseStartData = {
+				x:e.pageX - nowLeft,
+				y:e.pageY - nowTop,
+			}
+		}else{
+			self.mouseStartData = {
+				x:e.pageX,
+				y:e.pageY
+			}
+		}
+	}
+	this.node.onmouseup = function (e){
+		e.preventDefault();
+		delete self.mouseStartData;
+	}
+
+}
+MapPage.prototype.initButtons = function (screenSize){
+	var self = this;
+	this.returnButton = new PageButton("mapReturnButton",this,{class:"returnButton",text:"Return"});
+	this.returnButton.node.onclick = function (){
+		self.screen.showMainMenu()
+	};
+
+	this.equipButton = new PageButton("equipButton",this,{text:"Equip"});
+	this.equipButton.node.onclick = function (){
+		self.screen.showEquip();
+	}
+	this.equipButton.node.style.left = screenSize.width - 192 + "px"
+}
+MapPage.prototype.initPopupWindow = function (screenSize){
+	this.popupWindow = new PageDiv("mapPopupWindow",this);
+	this.popupWindow.J.hide();
+	
+	var popupLeft = (screenSize.width - this.popupWindow.J.width())/2;
+	
+	this.popupWindow.node.style.left = popupLeft+"px";
+	
+	this.popupWindow.header = new PageDiv("popupWindowHeader",this.popupWindow);
+	this.popupWindow.title = new PageElement("h2","popupWindowTitle"
+							,this.popupWindow)
+
+	this.popupWindow.storyViewer = new PageDiv("popupWindowStoryViewer"
+								   ,this.popupWindow);
+
+	
+	this.popupWindow.cancelButton = new PageButton("popupWindowCancelButton"
+									   ,this.popupWindow,{text:"Cancel"});
+	this.popupWindow.enterButton = new PageButton("popupWindowEnterButton"
+									  ,this.popupWindow,{text:"Enter"});
+
+	this.popupWindow.continueButton = new PageButton("popupWindowContinueButton"
+													 ,this.popupWindow
+													,{text:"Continue"});
+	this.popupWindow.continueButton.J.hide();
+	this.stageName;
+	var self = this;
+	this.popupWindow.cancelButton.node.onclick = function (){
+		self.popupWindow.J.slideUp("fast");
+	};
+	this.popupWindow.enterButton.node.onclick = function (){
+		if(self.popupWindow.stageName)
+			self.screen.startStage(self.popupWindow.stageName);
+	};
+	this.popupWindow.continueButton.node.onclick = function (){
+		self.popupWindow.J.slideUp("fast",function (){
+			self.popupWindow.continueButton.J.hide();
+			self.popupWindow.cancelButton.J.show();
+			self.popupWindow.enterButton.J.show();
+		});
+	}
+}
+MapPage.prototype.mapPointActive = function (stageName){
+	this.popupWindow.stageName = stageName;
+	var storyData = db.story.getDataByName(stageName);
+	console.log(storyData);
+	if(storyData){
+		this.popupWindow.title.J.html(storyData.title);
+		this.popupWindow.storyViewer.J.html(storyData.text);
+	}
+	this.popupWindow.J.slideDown("fast");
+}
+
+MapPage.prototype.show = function (){
+	//this.J.show();
+	this.J.fadeIn("fast");
+	this.handlePopupStory();
+}
+MapPage.prototype.handlePopupStory = function (){
+	var userData = Static.getUserData();
+	var clearedStageNo = userData.clearedStageNo;
+	console.log(clearedStageNo);
+	var popupStoryData = db.story.getDataByName("popupStory");
+	if(!popupStoryData[clearedStageNo]
+	  || typeof userData.highScore[clearedStageNo + 1] != "undefined"){
+		return;
+	}
+	var nowStory = popupStoryData[clearedStageNo];
+	this.popupWindow.cancelButton.J.hide();
+	this.popupWindow.enterButton.J.hide();
+	this.popupWindow.continueButton.J.show();
+	if(nowStory.title)
+		this.popupWindow.title.J.html(title);
+	this.popupWindow.storyViewer.J.html(nowStory.text);
+	this.popupWindow.J.slideDown("fast");
+	if(clearedStageNo == 15){
+		clearedStageNo = 100;
+	}
+}
+MapPage.prototype.hide = function (){
+	//this.J.hide();
+	this.J.fadeOut("fast")
+}
+var MapPoint = PageButton.sub();
+MapPoint.prototype._init = function (pointData,mapPage,type){
+	
+	this.stageName = pointData.stageName;
+	this.mapPage = mapPage;
+	var info = {};
+	info.class = "mapPoint_"+type;
+	var stageNumber = pointData.number;
+	info.text = stageNumber;
+
+	this.parent.call(this,this.stageName,mapPage,info);
+	
+	//console.log(pointData.x,pointData.y,this.J.width()/2,this.J.height()/2);
+	this.J.css(
+		{left:pointData.x - this.J.width()/2
+		 ,top:pointData.y - this.J.height()/2
+		});
+	
+	var self = this;
+	if(Static.mobileUser){
+		if(type != "locked"){
+			this.node.ontouchend = function (e){
+				e.preventDefault();
+				self.J.removeClass(self.className+"-active");
+				MapPoint.activeFunc.call(self);
+			}
+		}else{
+			this.node.ontouchend = function (e){
+				e.preventDefault();
+				self.J.removeClass(self.className+"-active");
+			}
+		}
+		this.node.ontouchstart = function (e){
+			e.preventDefault();
+			self.J.addClass(self.className+"-active");			
+		}
+	}else{
+		if (type != "locked"){
+			this.node.onclick = function (){
+				MapPoint.activeFunc.call(self);
+			}
+		}
+		this.J.mousedown(function (){
+			self.J.addClass(self.className+"-active");			
+		})
+		this.J.mouseup(function (){
+			self.J.removeClass(self.className+"-active");
+		})
+	}
+}
+MapPoint.activeFunc = function (){
+	this.mapPage.mapPointActive(this.stageName);
+}
+var EquipPage = PageDiv.sub();
+EquipPage.prototype._init = function (screen){
+	this.parent.call(this,"equipPage",screen,{class:"page"});
+	this.screen = screen;
+	this.elves = {};
+	this.towers = {};
+	this.activeTowers = {num:0};
+	this.activeElves = {num:0};
+	this.availElvesBox = new PageDiv("availElvesBox",this);
+	this.availTowersBox = new PageDiv("availTowersBox",this);
+	
+	this.infoBox = new PageDiv("equipInfoBox",this);
+	this.infoBox.text = new PageElement("p","equipInfoText",this.infoBox);
+	this.infoBox.magicBox = new PageDiv("equipMagicBox",this.infoBox);
+	this.infoBox.button = new PageButton("equipInfoBoxButton",this.infoBox);
+	this.infoBox.J.hide();
+	
+	var userData = Static.getUserData();
+	for (var i = 0; i < userData.availTowers.length; i++){
+		var towerName = userData.availTowers[i];
+		this.activeTowers[towerName] = false;
+		var towerIcon = new PageDiv(towerName+"Icon",this.availTowersBox,
+								   {class:"equipPageTowerIcon"});
+		towerIcon.name = towerName;
+		this.initTowerIcon(towerIcon);
+		this.towers[towerName] = towerIcon;
+		
+	}
+	for (var i = 0; i < userData.availElves.length; i++){
+		var elfName = userData.availElves[i];
+		this.activeElves[elfName] = false;
+		var elfIcon = new PageDiv(elfName+"Icon",this.availElvesBox,
+								  {class:"equipPageElfIcon"});
+		elfIcon.name = elfName;
+		this.initElfIcon(elfIcon);
+		this.elves[elfName] = elfIcon;
+	}
+	for (var i = 0; i < userData.towers.length; i++){
+		var towerName = userData.towers[i];
+		this.activeTowers[towerName] = true;
+		this.activeTowers.num++;
+		this.towers[towerName].equipedMark.J.show();
+	}
+	for (var i = 0; i < userData.elves.length; i++){
+		var elfName = userData.elves[i];
+		this.activeElves[elfName] = true;;
+		this.activeElves.num++;
+		this.elves[elfName].equipedMark.J.show();
+	}
+	//console.log(this.activeElves,this.activeTowers);
+	var self = this;
+	this.returnButton = new PageButton("equipPageReturnButton",this,{text:"Return"});
+	this.returnButton.node.onclick = function (){
+		self.registEquip();
+		screen.showMap();
+	}
+}
+EquipPage.prototype.registEquip = function (){
+	var elves = [];
+	for(var name in this.activeElves){
+		if(name == "num")
+			continue;
+		if(this.activeElves[name])
+			elves.push(name);
+	}
+	var towers = [];
+	for(var name in this.activeTowers){
+		if(name == "num")
+			continue;
+		
+		if(this.activeTowers[name] == true)
+			towers.push(name);
+	}
+	var userData = Static.getUserData();
+	userData.elves = elves;
+	userData.towers = towers;
+	Static.updateUserData();
+	console.log(userData);
+}
+EquipPage.prototype.show = function (){
+	//this.J.show();
+	this.J.fadeIn("fast")
+}
+EquipPage.prototype.initTowerIcon = function (towerIcon){
+	var towerData = db.tower.getDataByName(towerIcon.name);	
+	towerIcon.img = new PageElement("img",towerIcon.name+"Img",
+									towerIcon,
+									{class:"equipPageTowerImg"});
+	towerIcon.img.node.src = towerData.buttonPic.src;
+	towerIcon.costText = new PageElement("p",towerIcon.name+"cost",
+										 towerIcon,
+										 {class:"equipPageTowerCost",
+										  text:towerData.cost.mena});
+	towerIcon.equipedMark = new PageElement("img",towerIcon.name+"equipedMark",
+										 towerIcon,
+										 {class:"equipPageTowerEquipedMark"});
+	towerIcon.equipedMark.node.src = img.towerEquipedMark.src;
+	towerIcon.equipedMark.J.hide();
+	
+	var self = this;
+	towerIcon.node.onclick = function (){
+		self.showTowerInfo(towerIcon);
+	};
+}
+EquipPage.prototype.initElfIcon = function (elfIcon){
+	var elfData = db.elf.getDataByName(elfIcon.name);
+	elfIcon.img = new PageElement("img",elfIcon.name+"Img",
+								  elfIcon,
+								  {class:"equipPageElfImg"});
+	elfIcon.img.node.src = elfData.buttonPic.src;
+	elfIcon.equipedMark = new PageElement("img",elfIcon.name+"equipedMark",
+										 elfIcon,
+										 {class:"equipPageElfEquipedMark"});
+	elfIcon.equipedMark.node.src = img.elfEquipedMark.src;
+	
+	elfIcon.equipedMark.J.hide();
+	var self = this;
+	elfIcon.node.onclick = function (){
+		self.showElfInfo(elfIcon);
+	};
+}
+EquipPage.prototype.showTowerInfo = function (towerIcon){
+	this.infoBox.J.hide();
+	this.infoBox.magicBox.J.hide();
+	var towerData = db.tower.getDataByName(towerIcon.name);
+	var text = towerData.intro.name + "</br>"
+		+ towerData.intro.text + "</br>"
+		+"基础攻击 : "+ towerData.damage + "</br>"
+		+"攻击间隔 : "+towerData.attackDelay + "</br>"
+		+"最小攻击间隔 : "+towerData.minAttackDelay + "</br>"
+		+"锁定距离 : "+towerData.range;
+
+	this.infoBox.text.J.html(text);
+
+	if(this.activeTowers[towerIcon.name]){
+		this.setInfoBoxButton("equiped");
+		towerIcon.equipedMark.J.show();
+	}else{
+		if(this.activeTowers.num >= 3){
+			this.setInfoBoxButton("unavail");
+			towerIcon.equipedMark.J.hide();
+		}else{
+			this.setInfoBoxButton("unequiped");
+			towerIcon.equipedMark.J.hide();
+		}
+	}
+	var self = this;
+	this.infoBox.button.node.onclick = function (){
+		self.equipTower(towerIcon);
+	}
+	this.infoBox.J.slideDown("fast");
+	
+}
+EquipPage.prototype.showElfInfo = function (elfIcon){
+	this.infoBox.J.hide();
+	this.infoBox.magicBox.J.html("");
+	var elfData = db.elf.getDataByName(elfIcon.name);
+	var userData = Static.getUserData();
+	var text = elfData.intro.name + "</br>"
+		+ elfData.intro.text + "</br>"
+		+"精灵属性:</br>"
+		+"基础攻击 : "+ elfData.damage + " ; "
+		+"攻击间隔 : "+elfData.attackDelay + " ; "
+		+"锁定距离 : "+elfData.range + " ; "
+		+"升级成长 : "+elfData.grow+"</br>"
+		+"辅助能力:</br>";
+	if(elfData.buff.damage)
+		text += "伤害倍率 : "+ elfData.buff.damage+" ; ";
+	if(elfData.buff.speed)
+		text += "速度倍率 : "+ elfData.buff.speed+" ; ";
+	if(elfData.buff.range)
+		text += "范围提升 : " + elfData.buff.range+" ; ";
+	this.infoBox.text.J.html(text);
+	var availSpellData = userData.spell[elfIcon.name];
+	if(availSpellData && availSpellData.length > 0){
+		for(var i = 0 ; i < availSpellData.length ; i++){
+			var spellName = availSpellData[i];
+			var spellData = elfData.spell[spellName];
+			var spellBox = new PageDiv("equipInfoSpellBox"+spellName,this.infoBox.magicBox,{class:"equipSpellBox"});
+			var spellIcon = new PageElement("img","spellIcon"+spellName,spellBox,{class:"equipSpellIcon"});
+			spellIcon.text = new PageElement("p","spellIconCost"+spellName,spellBox,{class:"spellIconCost",text:spellData.cost.mena});
+			
+			spellIcon.J[0].src = spellData.pic.src;
+
+			
+			var spellIntroText = spellData.intro.name + "</br>"
+				+spellData.intro.text + "</br>";
+			if(spellData.type == "attack"){
+				if(spellData.attackType == "circle"){
+					spellIntroText += "基础伤害 : "
+						+ spellData.damage + " x " + spellData.repeat + " ; "
+						+ "作用范围 : " + spellData.spellRange + " ; "
+						+ "升级成长 : " + spellData.grow + " ; ";
+					if(spellData.directional == true){
+						spellIntroText += "施放距离 : "+spellData.castRange + "</br>";
+					}
+				}else{
+					//line
+					spellIntroText += "基础伤害 : "
+						+ spellData.damage + " x " + spellData.repeat + " ; "
+						+ "升级成长 : " + spellData.grow + " ; ";
+				}
+			}else{
+				if(spellData.buffDamage){
+					spellIntroText +="伤害倍率 : "
+						+spellData.buffDamage + " ; ";
+				}
+				if(spellData.buffSpeed){
+					spellIntroText +="速度倍率 : "
+					+spellData.buffSpeed+" ; ";
+				}
+				if(spellData.buffRange){
+					spellIntroText +="范围提升 : "
+						+ spellData.buffRange+" ; ";
+				}
+				
+			}
+			var spellIntro = new PageElement("p","equipSpellIntro"+spellName,spellBox,{class:"equipSpellIntro",text:spellIntroText});
+		}
+		this.infoBox.magicBox.J.show();
+	}
+	
+	if(this.activeElves[elfIcon.name]){
+		elfIcon.equipedMark.J.show();
+		this.setInfoBoxButton("equiped");
+	}else{
+		if(this.activeElves.num >= 3){
+			elfIcon.equipedMark.J.hide();
+			this.setInfoBoxButton("unavail");
+		}else{
+			elfIcon.equipedMark.J.hide();
+			this.setInfoBoxButton("unequiped");
+		}
+	}
+	var self = this;
+	this.infoBox.button.node.onclick = function (){
+		self.equipElf(elfIcon);
+	}
+
+	this.infoBox.J.slideDown("fast");
+}
+EquipPage.prototype.setInfoBoxButton = function (type){
+	switch(type){
+	case "equiped" :
+		this.infoBox.button.J.html("已装备");
+		this.infoBox.button.J.addClass("equipedEquipButton");
+		break;
+	case "unequiped" :
+		this.infoBox.button.J.removeClass("equipedEquipButton");
+		this.infoBox.button.J.html("未装备");
+		break;
+	case "unavail" :
+		this.infoBox.button.J.removeClass("equipedEquipButton");
+		this.infoBox.button.J.html("装备已满");
+		break;
+	}
+}
+EquipPage.prototype.equipElf = function (elfIcon){
+	var elfName = elfIcon.name;
+	console.log(elfIcon.name)
+	if(this.activeElves[elfName] == true){
+		this.activeElves[elfName] = false;
+		this.activeElves.num --;
+		elfIcon.equipedMark.J.hide();
+		this.setInfoBoxButton("unequiped");
+		return;
+	}
+	if(this.activeElves.num >= 3){
+		return false;
+	}else{
+		this.activeElves[elfName] = true;
+		this.activeElves.num ++;
+		elfIcon.equipedMark.J.show();
+		this.setInfoBoxButton("equiped");
+	}
+}
+EquipPage.prototype.equipTower = function (towerIcon){
+	var towerName = towerIcon.name;
+	if(this.activeTowers[towerName] == true){
+		this.activeTowers[towerName] = false;
+		this.activeTowers.num --;
+		towerIcon.equipedMark.J.hide();
+		this.setInfoBoxButton("unequiped");
+		return;
+	}
+	if(this.activeTowers.num >= 3){
+		return false;
+	}else{
+		this.activeTowers[towerName] = true;
+		this.activeTowers.num ++;
+		towerIcon.equipedMark.J.show();
+		this.setInfoBoxButton("equiped");
+	}
+}
+
+
+var StoryPage = PageDiv.sub();
+StoryPage.prototype._init = function (screen){
+	this.parent.call(this,"storyPage",screen,{class:"page"});
+}
+StoryPage.prototype.show = function (){
+	this.J.fadeIn("fast")
+}
+var SystemPage = PageDiv.sub();
+SystemPage.prototype._init = function (screen){
+	this.parent.call(this,"systemPage",screen,{class:"page"});
+	this.title = new PageElement("h2","systemPageTitle",this,{class:"pageTitle",text:"System"});
+	this.screen = screen;
+	
+	this.frameRateSwitch = new PageDiv("frameRateSwitchBox",this,{class:"systemSwitchBox"});
+	this.frameRateSwitch.title = new PageElement("h3","frameRateSwitchTitle",this.frameRateSwitch,{text:"帧率"});
+	this.frameRateSwitch.intro = new PageElement("p","frameRateSwitchIntro",this.frameRateSwitch,{text:"高帧率可以带来更加流畅的体验，同时游戏的进行速度会加快,但是许多硬件或浏览器对支持得并不好。如果高帧率反而让你觉得更卡，请选择低帧率</br>PS:在低帧率下请不要用过于“风骚”的操作方式，我会识别不出来的(´・ω・｀)"});
+	this.highRateButton = new PageButton("highRateButton",this.frameRateSwitch,{class:"switchButton",text:"高帧率"});
+	this.middleRateButton = new PageButton("middleRateButton",this.frameRateSwitch,{class:"switchButton",text:"中帧率"})
+	this.lowRateButton = new PageButton("lowRateButton",this.frameRateSwitch,{class:"switchButton",text:"低帧率"});
+	
+	this.skipStorySwitch = new PageDiv("skipStorySwitchBox",this,{class:"systemSwitchBox"});
+	this.skipStorySwitch.title = new PageElement("h3","skipStorySwitchTitle",this.skipStorySwitch,{text:"剧情"});
+	this.skipStorySwitch.intro = new PageElement("p","skipStorySwitchIntro",this.skipStorySwitch,{text:"选择是否跳过已经胜利的关卡的剧情"});
+	this.skipStoryButton = new PageButton("skipStoryButton",this.skipStorySwitch,{class:"switchButton",text:"跳过"});
+	this.notSkipStoryButton = new PageButton("notSkipStoryButton",this.skipStorySwitch,{class:"switchButton",text:"不跳过"})
+
+	this.resetButton = new PageButton("resetButton",this,{text:"重置游戏"});
+	this.resetPopupWindow = new PageDiv("resetPopupWindow",this);
+	this.resetPopupWindow.J.hide();
+	this.resetPopupWindow.title = new PageElement("h2","resetWindowTitle",this.resetPopupWindow,{text:"确定要重置游戏么?"});
+	this.resetPopupWindow.text = new PageElement("p","resetWindowText",this.resetPopupWindow,{text:"!!注意!!</br>剧情,关卡分数,解锁物件会被重置!</br>挑战模式数据将会保留"});
+	this.resetPopupWindow.agreeButton = new PageButton("resetWindowAgreeButton",this.resetPopupWindow,{class:"resetWindowButton",text:"重置"});
+	this.resetPopupWindow.cancelButton = new PageButton("resetWindowCancelButton",this.resetPopupWindow,{class:"resetWindowButton",text:"算了"});
+
+	this.aboutBox = new PageDiv("aboutBox",this);
+	this.aboutBox.title = new PageElement("h3","aboutBoxTitle",this.aboutBox,{text:"关于"});
+	this.aboutBox.text = new PageElement("p","aboutBoxText",this.aboutBox,{text:"Coder:潘传盛</br>Disigner:万龙雨</br>剧情协力:大暗月</br>UniqueStudio@超元气魔法小队"})
+
+	var userData = Static.getUserData();
+	switch(userData.setting.frameRate){
+		case 40 :
+		this.highRateButton.J.addClass("switchOn");
+		break;
+		case 70 :
+		this.middleRateButton.J.addClass("switchOn");
+		break;
+		case 100 :
+		this.lowRateButton.J.addClass("switchOn");
+		break;
+	}
+	if(userData.setting.skipClearedStory){
+		this.skipStoryButton.J.addClass("switchOn");
+	}else{
+		this.notSkipStoryButton.J.addClass("switchOn");
+	}
+
+	var self = this;		
+	this.returnButton = new PageButton("systemPageReturnButton",this,{text:"Return"});
+	this.returnButton.node.onclick = function (){
+		screen.showMainMenu();
+	}
+	
+
+	this.highRateButton.node.onclick = function (){
+		self.lowRateButton.J.removeClass("switchOn");
+		self.middleRateButton.J.removeClass("switchOn");
+		self.highRateButton.J.addClass("switchOn");
+		userData.setting.frameRate = 40;
+		Static.updateUserData();
+	};
+
+	this.middleRateButton.node.onclick = function (){
+		self.lowRateButton.J.removeClass("switchOn");
+		self.highRateButton.J.removeClass("switchOn");
+		self.middleRateButton.J.addClass("switchOn");
+		userData.setting.frameRate = 70;
+		Static.updateUserData();
+	};
+	
+	this.lowRateButton.node.onclick = function (){
+		self.middleRateButton.J.removeClass("switchOn");
+		self.highRateButton.J.removeClass("switchOn");
+		self.lowRateButton.J.addClass("switchOn");
+		userData.setting.frameRate = 100;
+		Static.updateUserData();
+	};
+	this.skipStoryButton.node.onclick = function (){
+		self.notSkipStoryButton.J.removeClass("switchOn");
+		self.skipStoryButton.J.addClass("switchOn");
+		userData.setting.skipClearedStory = true;
+		Static.updateUserData();
+	};
+	this.notSkipStoryButton.node.onclick = function (){
+		self.skipStoryButton.J.removeClass("switchOn");
+		self.notSkipStoryButton.J.addClass("switchOn");
+		userData.setting.skipClearedStory = false;
+		Static.updateUserData();
+	};
+	this.resetButton.node.onclick = function (){
+		self.resetPopupWindow.J.fadeIn();
+	}
+	this.resetPopupWindow.agreeButton.node.onclick = function (){
+		Static.newUserData();
+		self.resetPopupWindow.J.fadeOut();
+	}
+	this.resetPopupWindow.cancelButton.node.onclick = function (){
+		self.resetPopupWindow.J.fadeOut();
+	}
+}
+SystemPage.prototype.show = function (){
+	this.skipStorySwitch.J.show();
+	this.J.fadeIn("fast");
+}
+
+var ChalengePage = PageDiv.sub();
+ChalengePage.prototype._init = function (screen){
+	this.parent.call(this,"chalengePage",screen,{class:"page"});
+	this.title = new PageElement("h2","chalengePageTitle",this,{class:"pageTitle",text:"Chalenge"});
+	var self = this;
+	this.returnButton = new PageButton("chalengePageReturnButton",this,{text:"Return"});
+	this.returnButton.node.onclick = function (){
+		screen.showMainMenu();
+	}
+}
+ChalengePage.prototype.show = function (){
+	this.J.fadeIn();
+}

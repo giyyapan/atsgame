@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html xmlns:wb="http://open.weibo.com/wb" xmlns:xn="http:///www.renren.com/2009/xnml">
+  <head>
+    
+    <title>召唤师艾莉娅 - Aria The Summoner</title>
+    <base target="view_window">
+    <meta id="viewport" name="viewport" content="width=device-width , target-densitydpi=device-dpi , user-scalable=no , maximum-scale=1.0 , minimum-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="tencent-x5-page-direction" content="portrait" />
+
+    <!--
+      --> 
+    <link rel="shortcut icon" href="favicon.ico" /> 
+  </head>
+  <script type="text/javascript">
+    if(navigator.userAgent.indexOf("Android") < 0
+						&& navigator.userAgent.indexOf("iPad") < 0){
+											 //desktop user
+											 if(navigator.userAgent.indexOf("Safari") < 0){
+																    window.location = "unsupportBrowserPage.html";
+																    }
+																    }
+																    </script>
+  <body>
+    <div id="desktopExtraBoxLeft" class="desktopExtraBox" style="display:none;">
+      <div id="hintBox">
+	<h3>觉得画面尺寸不合适？</h3>
+	<p>因为我没有Mac，我也不清楚Safari应该如何调整画面缩放比例：（
+	  <br />
+	  <br />
+	  如果你知道方法,<span>请你告诉我</span>，我会把你的方法写在这里告诉其他人。
+	  <br />
+	  <br />
+	  <span style="-webkit-user-select:text">我的邮箱是：giyyapan@gmail.com
+	    <br />
+	    或者在Twitter上@GiyyaPan
+	  </span>
+	</p>
+	<a id="hintBoxCloseButton" >不再显示</a></p>
+</div>
+<div id="leftButtonBox" style="display:none;">
+</div>
+</div>
+<div id="desktopExtraBoxRight" class="desktopExtraBox" style="display:none;">
+  <div id="rightButtonBox">
+    <button id="soundSwitch" class="" title="声音开关"></button>
+    <button id="helpButton" class="" title="帮助"></button>
+    <button id="shareButton" class="" title="分享"></button>
+    <button id="aboutButton" class="" title="关于"></button>
+  </div>
+  <div id="shareBox">
+    <wb:share-button id="wbShareButton" class="shareButtons" count="n" size="big" relateuid="1771245157" url="atsgame.com" title="召唤师艾莉娅 -- 一款新颖而刺激的在线塔防游戏"></wb:share-button>
+    <div class="block"></div>
+    <script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>
+    <a id="rrShareButton" class="shareButtons" name="xn_share" onclick="shareClick()" type="icon_large" href="javascript:;"></a>
+    <script type="text/javascript">
+      function shareClick() {
+      var rrShareParam = {
+      //resourceUrl : 'http://localats/img/desktopUI/aria.png',//分享的资源Url
+      title : '召唤师艾莉娅 -- 一款新颖而刺激的在线塔防游戏',
+      description : 'http://atsgame.com/ 来到魔法的大陆，与Aria和她的精灵们一起踏上拯救世界的征程吧征程吧！ ——华中科技大学联创团队作品'
+      };
+      rrShareOnclick(rrShareParam);
+      }
+    </script>
+  </div>
+  <img id="desktopBgPig" src="" class="" alt="" />
+</div>
+<div id="mainScreen" class="screen">
+</div>
+<div id="canvasScreen" class="screen">
+  <img id="canvasBackground" src="" class="" alt="" />
+  <canvas id="bgCanvas" width="540" height="960" class="gameCanvas">
+    Your browser does not support the HTML5 Canvas!
+  </canvas>
+  <canvas id="canvas" width="540" height="960" class="gameCanvas">
+    Your browser does not support the HTML5 Canvas!
+  </canvas>
+  <canvas id="uiCanvas" width="540" height="960" class="gameCanvas">
+    Your browser does not support the HTML5 Canvas!
+  </canvas>
+  <div id="canvasStoryBox" class="">
+    <img id="canvasStoryCharaPic" src="" class="" alt="" />
+    <div id="canvasStoryText">
+    </div>
+  </div>
+  <div id="canvasExitBox" class="">
+    <h2>Exit</h2>
+    <p>确定要放弃当前游戏么?</br>（目前的进度将会丢失）</p>
+    <button id="exitBoxRestartButton" >重新开始</button>
+    <button id="exitBoxExitButton" >退出</button>
+    <button id="exitBoxCancelButton">不要</button>
+  </div>
+</div>
+<p id="copyrightText">©Copyright 2012 -<a href="http://www.hustunique.com/" target="view_window">Unique Studio</a>- All Rights Reserved.</p>
+<div id="loginPage" style="display:none;">
+  <div id="loginBox">
+    <h1 id="loginBoxTitle" >Welcome</h1>
+    <h4 id="loginBoxHint">请登录</h4>
+    <label>用户名 </label> <input type="text" id="usernameInput" name="username" value="" placeholder="新用户输入用户名注册"/>
+    <br />
+    <label>密码 </label> <input type="password" id="passwordInput" name="password" value="" placeholder="可以留空"/>
+    <br />
+    <button id="registButton" class="pageButton_center">注 册</button>
+    <br />
+    <button id="loginCancelButton" class="pageButton_left">取 消</button>
+    <button id="loginButton" class="pageButton_right">登 录</button>
+  </div>
+</div>
+<div id="extraPage" style="display:none;">
+  <div id="extraPageBox">
+    <button id="extraPageCloseButton" class="" title="关闭"></button>
+    <div id="aboutBox" style="display:none">
+      <h1>About</h1>
+      <p id="aboutText1" >
+	召唤师艾莉娅是(Aria The Summoner)一款由华中科技大学联创团队成员开发的html5在线塔防游戏，在2012年腾讯html5创新大赛上获得冠军。
+	<br />
+	召唤师不仅有传统塔防的策略性，还加入了新颖的“精灵+地脉”系统，使得游戏比一般的塔防多了一些即时策略和角色扮演的元素。有趣的系统搭配上轻松愉快的剧情，希望能给你一些不一样的塔防体验
+	<br />
+	(◍•ᴗ•◍)
+	<br />
+      </p>
+      <p id="aboutText2" >游戏最初为参加比赛而设计，游戏画面为了适配移动设备作成了长方形，但是由于目前移动设备对html5支持的种种问题，比赛结束后我们几乎放弃了针对移动设备的支持转而注重提升PC用户的游戏质量，所以现在虽然手机（使用Chrome浏览器）也可以进行本游戏，但是我们依然建议玩家使用电脑浏览器进行游戏。</p>
+
+      <h4>版权声明</h4>
+      <p id="aboutText3" >联创团队拥有游戏代码以及图片的所有版权。音乐和音效来自互联网。</p>
+
+      <h4>制作者</h4>
+      <div id="authorBox">
+	<p id="author1" >Code::潘潘(联创团队)</p>
+	<a href="https://twitter.com/GiyyaPan" ><img src="./img/desktopUI/twitter_logo.png" class="" alt="" /></a>
+	<br />
+	<p id="author2" >Design::龙妹(联创团队)</p>
+	<a href="http://www.weibo.com/u/1986979983" ><img src="./img/desktopUI/weibo_logo.png" class="" alt="" /></a>
+	<a href="http://www.renren.com/347276441" ><img src="./img/desktopUI/renren_logo.png" class="" alt="" /></a>
+	<br />
+	<p id="author3" >剧情协力::大暗月</p>
+	<a href="http://weibo.com/u/2290894984"><img src="./img/desktopUI/weibo_logo.png" class="" alt="" /></a>
+	<a href="http://www.renren.com/394528056"><img src="./img/desktopUI/renren_logo.png" class="" alt="" /></a>
+	<br />
+      </div>
+      <div id="uniqueStudioBox">
+	<a id="uniqueBoxLogo" href="http://www.hustunique.com/" title="访问联创团队网站"><img src="./img/desktopUI/uniqueLogo-active.png" class="" alt="" /></a>
+	<br />
+	<a id="uniqueBoxLink" href="http://www.hustunique.com/" title="访问联创团队网站">UniqueStudio@联创团队作品</a>
+	<br />
+	<a href="http://weibo.com/uniquestudio"><img src="./img/desktopUI/weibo_logo.png" class="" alt="" /></a>
+	<a href="http://page.renren.com/601317380"><img src="./img/desktopUI/renren_logo.png" class="" alt="" /></a>
+      </div>
+
+
+    </div>
+    <div id="helpBox" style="display:none">
+      <h1>Help</h1>
+      
+      <h4>不知道如何操作？</h4>
+      <p>emmm..这就奇怪啦，在开始的几关里面是有详细的教程的呀？
+	<br />
+	跳太快了没看到？
+	<br />
+	<br />
+	好吧~那么请你回到主菜单(直接<a href="./index.html">刷新</a>就好)
+	<br />
+	然后在System(系统)界面中把 <span>是否跳过已经胜利的关卡的剧情</span>这个开关选到 <span>不跳过</span> 这一项，然后再打一遍<span>第一关</span>(基础操作)<span>第二关</span>(精灵和地脉的基础)，或者 <span>第三关</span>(精灵传送与魔法到操作)吧～
+	<br />
+	<br />
+	另外，游戏中的许多操作都是基于<span>拖动</span>的，在传送，施放魔法等操作的时候尽量<span>不要</span>快速点击鼠标，而是先按下，等位置确定之后再松开鼠标按键！
+	<br />
+	祝你武运昌隆ω/
+      </p>
+      <h4>关卡好难！</h4>
+      <p>哈哈！难吧难吧？
+	<br />
+	...咳咳，我是说，我可没有故意让你打不过..
+	<br />
+	<br />
+	如果挑战失败，你有没有注意到<span>再次挑战</span>的时候<span>初始金钱会增加</span>？(前提是你没在设置中关闭这个功能)一直加下去的话总会打过的吧？（笑
+	<br />
+	什么？还打不过？ 好吧，这就拙急了..难道你都不用精灵的 <span>魔法</span>的么？又或者老是把塔造到了精灵的 <span>加成范围</span>之外？甚至精灵都不站在<span>合适属性的地脉</span>上么？在看不清楚局势的时候要<span>多暂停啊</span>魔法少年/少女！
+	<br />
+	<br />
+	有点启发啦？感觉试试新的打法吧～
+	<br />
+	(◍•ᴗ•◍)
+      </p>
+      <h4>我发现了BUG！</h4>
+      <p>什么！真的么？快告诉我！</p>
+      <p><span style="-webkit-user-select:text">我的邮箱是：giyyapan@gmail.com</span></p>
+      <span style="font-size:medium;"><s>不过如果是不严重的bug可能会某个懒虫无视掉就是了</s></span>
+    </div>
+  </div>
+</div>
+<div id="networkMessageBoxContainer">
+  <div id="networkMessageBox">
+  </div>
+</div>
+
+<div id="waitPage">
+  <div id="waitPageLoadingMark">
+    <img id="loadingPageMagicCircle" src="./img/mainScreenUI/magicCircle.png">
+    <p id="loadedPercent"> 0%</p>
+    <p>Loading</p>
+  </div>
+  <div id="resourceContainer">
+    
+  </div>
+</div>
+
+<iframe src="manifest.html" style="display:none;"></iframe>
+
+<link rel="stylesheet" href="waitPage.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" media="" />
+
+
+<script type="text/javascript">
+  if(navigator.userAgent.indexOf("Android") > -1
+	  || navigator.userAgent.indexOf("iPad") > -1){
+	    var waitPage = document.getElementById("waitPage");
+	    console.log(waitPage)
+	    waitPage.style.width = window.screen.width + "px";
+	    waitPage.style.height = window.screen.height + "px";
+	    waitPage.ontouchstart = function (e){
+	    e.preventDefault();
+	    };
+	    waitPage.ontouchmove = function (e){
+	    e.preventDefault();
+	    };
+	    waitPage.ontouchend = function (e){
+	    e.preventDefault();
+	    };
+	    }
+</script>
+
+</body>
+
+
+<!--Start Load Game--> 
+<script type="text/javascript" src="jquery-1.5.min.js"></script>
+<script type="text/javascript" src="md5.js"></script>
+<script type="text/javascript" src="network.js"></script>
+<script type="text/javascript" src="static.js"></script>
+<!--Load Stage Script-->
+
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="user.js"></script>
+<script type="text/javascript" src="imgs.js"></script>
+<script type="text/javascript" src="audios.js"></script>
+
+<!--Load Game Data-->
+<script type="text/javascript" src="db/stage.js"></script>
+<script type="text/javascript" src="db/story.js"></script>
+<script type="text/javascript" src="db/tower.js"></script>
+<script type="text/javascript" src="db/demon.js"></script>
+<script type="text/javascript" src="db/elf.js"></script>
+<script type="text/javascript" src="db/dataBase.js"></script>
+
+<script type="text/javascript" src="drawable.js"></script>
+
+<script type="text/javascript" src="gate.js"></script>
+<script type="text/javascript" src="demon.js"></script>
+<script type="text/javascript" src="flyDemon.js"></script>
+<script type="text/javascript" src="summoner.js"></script>
+<script type="text/javascript" src="tower.js"></script>
+<script type="text/javascript" src="elf.js"></script>
+<script type="text/javascript" src="springs.js"></script>
+
+<script type="text/javascript" src="fieldCell.js"></script>
+
+<script type="text/javascript" src="battleField.js"></script>
+
+<script type="text/javascript" src="panels/buttons.js"></script>
+<script type="text/javascript" src="panels/bar.js"></script>
+<script type="text/javascript" src="panels/statusBox.js"></script>
+<script type="text/javascript" src="panels/elfBar.js"></script>
+<script type="text/javascript" src="panels/towerBar.js"></script>
+<script type="text/javascript" src="panels/headerBar.js"></script>
+
+<script type="text/javascript" src="managers/panelManager.js"></script>
+<script type="text/javascript" src="managers/bgFieldManager.js"></script>
+<script type="text/javascript" src="managers/summonManager.js"></script>
+<script type="text/javascript" src="managers/extralDrawableManager.js"></script>
+<script type="text/javascript" src="managers/waveManager.js"></script>
+<script type="text/javascript" src="managers/elfEventManager.js"></script>
+<script type="text/javascript" src="managers/springManager.js"></script>
+<script type="text/javascript" src="managers/statusManager.js"></script>
+<script type="text/javascript" src="managers/storyManager.js"></script>
+
+<script type="text/javascript" src="stage.js"></script>
+
+<!--Load Page Script-->
+<script type="text/javascript" src="./page/pageFrame.js"></script>
+
+<script type="text/javascript" src="./page/winPage.js"></script>
+<script type="text/javascript" src="./page/losePage.js"></script>
+<script type="text/javascript" src="./page/equipPage.js"></script>
+<script type="text/javascript" src="./page/mapPage.js"></script>
+<script type="text/javascript" src="./page/challengePage.js"></script>
+<script type="text/javascript" src="./page/challengeResultPage.js"></script>
+<script type="text/javascript" src="./page/systemPage.js"></script>
+<script type="text/javascript" src="./page/mainPage.js"></script>
+<script type="text/javascript" src="./page/mainScreen.js"></script>
+
+<!--for desktop--> 
+<script type="text/javascript" src="desktopScript.js"></script>
+<link rel="stylesheet" href="desktop.css" type="text/css" media="screen" />
+<!--init Game-->
+<script type="text/javascript" src="game.js"></script>
+<script type="text/javascript" src="startup.js"></script>
+<!--share scripts-->
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+/*
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35823249-2']);
+  _gaq.push(['_setDomainName', 'atsgame.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+*/
+</script>
+
+</html>

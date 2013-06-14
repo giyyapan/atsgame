@@ -1,0 +1,51 @@
+var Desktop = {
+	soundSwitch:{
+		J:$("#soundSwitch"),
+		node:$("#soundSwitch")[0]
+	},
+	helpButton:{
+		J:$("#helpButton"),
+		node:$("#helpButton")[0]
+	},
+	shareButton:{
+		J:$("#shareButton"),
+		node:$("#shareButton")[0]
+	},
+	shareBox:{
+		J:$("#shareBox"),
+		node:$("#shareBox")[0],
+		show:false,
+	}
+};
+Desktop.initExtraBox = function (){
+	this.shareBox.J.hide();
+	var self = this;
+	this.soundSwitch.node.onmouseup = function (){
+		audio.play('stageClick');
+		console.log('soundswicth click')
+		if (Static.musicOn){
+			Static.musicOn = false;
+			audio.soundOff();
+			self.soundSwitch.J.addClass('switchOff');
+		}else{
+			Static.musicOn = true;
+			audio.soundOn();
+			self.soundSwitch.J.removeClass('switchOff');
+		}
+		console.log(Static)
+	}
+	this.helpButton.node.onmouseup = function (){
+		audio.play('stageClick');
+		console.log('helpBoxClicked');
+	}
+	this.shareButton.node.onmouseup = function (){
+		audio.play('stageClick');
+		if (self.shareBox.show){
+			self.shareBox.J.slideUp('fast');
+			self.shareBox.show = false;
+		}else{
+			self.shareBox.J.slideDown('fast');
+			self.shareBox.show = true;
+		}
+	}
+}

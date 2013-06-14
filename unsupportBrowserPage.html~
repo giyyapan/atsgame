@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>(´・ω・｀) 您的浏览器不支持召唤师艾莉娅</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <style type="text/css" >
+      body{
+      font-family:MyFont,Microsoft YaHei,Georgia, 'Times New Roman', Times, serif;
+      text-shadow:0 0 2px #fff;
+      }
+      #mainBox{
+      margin:auto;
+      width:700px;
+      margin-top:100px;
+      }
+      h4{
+      color:white;
+      }
+      a{
+      float:right;
+      color:white;
+      font-face:MyFont;
+      font-size:1.0em;
+      text-shadow:0 0 3px #fff;
+      }
+      a:hover{
+      color:#E45555;
+      text-shadow:0 0 4px #B33F3F;
+      }
+
+      #hiddenText{
+      -webkit-user-select:auto;
+      color:black;
+      text-shadow:none;
+      }
+      img{
+      margin-top:15px;
+      float:right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mainBox">
+      <h1>Sorry！</h1>
+      <h2>召唤师可能不支持您的浏览器</h2>
+      <h4>因为各个浏览器对HTML5的标准的支持都不一样，所以PC环境下召唤师艾莉娅目前仅能在Chrome浏览器中正常运行...</h4>
+      <h4>赶快趁此机会尝试目前最优秀的浏览器——来自Google的Chrome吧！</h4>
+      <a href="http://www.google.cn/intl/zh-CN/chrome/browser/">点我去下载页面</a>
+      <br />
+      <br />
+      <h2>对于使用Safari浏览器的Mac用户</h2>
+      <h4>虽然Safari浏览器使用了和Chrome相同的内核，但是由于开发者并没有用于测试的Mac电脑，所以并不能保证你们的体验是完美的。</h4>
+      <h4>如果你仍然希望尝试一下：</h4>
+      <a href="safariIndex.html">请点击这个链接</a>
+      <p id="hiddenText">好吧我会告诉你其实是开发者懒得做浏览器适配吗？o(￣ヘ￣o＃)</p>
+      <img src="img/mainScreenUI/losePagePic.gif" class="" alt="" />
+    </div>
+  </body>
+</html>

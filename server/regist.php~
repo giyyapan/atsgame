@@ -1,0 +1,46 @@
+<?php
+$con = mysql_connect('localhost','giyya','fuckmylife');
+
+if (!$con){
+ die('Could not connect: ' . mysql_error());
+}
+if (!$_REQUEST['username'] || !$_REQUEST['data']){
+  echo 'error';
+  return;
+}
+$username = $_REQUEST['username'];
+$dataJStr = $_REQUEST['data'];
+
+mysql_select_db('ats', $con);
+
+//check if username avail
+$sql = "SELECT * FROM users WHERE username='$username'";
+$result = mysql_query($sql,$con);
+if (mysql_fetch_array($result)){
+  echo '{"succeed":"false",errNum:"001","errType","usernameExist"}';
+  return;
+}
+
+$sql = "INSERT INTO users (username,dataJStr,updateTime) VALUES('$username','$dataJStr','1')";
+
+//echo $username.' '.$dataJStr.'</br>';
+
+if (!mysql_query($sql,$con))
+  {
+  die('Error: ' . mysql_error());
+  }
+
+$sql = "SELECT * FROM users WHERE username='$username'";
+
+$result = mysql_query($sql,$con);
+///*
+while($row = mysql_fetch_array($result))
+  {
+  $uuid = $row['uuid'];
+  echo '{"succeed":"true","uuid":"$uuid"}';
+  return;
+  }
+
+mysql_close($con);
+//*/
+?>

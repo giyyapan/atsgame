@@ -1,0 +1,20 @@
+{
+  "name": "召唤师艾莉娅",
+  "description": "一个新颖的塔防游戏，帮助艾莉娅和精灵们拯救世界！",
+  "version": "1",
+  "app": {
+    "urls": [
+		"http://atsgame.com",
+		"http://www.atsgame.com"
+    ],
+    "launch": {
+      "web_url": "http://atsgame.com/"
+    }
+  },
+  "icons": {
+    "128": "icon_128.png"
+  },
+  "permissions": [
+    "unlimitedStorage",
+  ]
+}

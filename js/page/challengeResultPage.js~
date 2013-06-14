@@ -1,0 +1,138 @@
+var ChallengeResultPage = PageDiv.sub();
+ChallengeResultPage.prototype._init = function (stageName,screen,stageResult){
+	this.screen = screen;
+	this.game = screen.game;
+	ChallengeResultPage.parent.call(this,"challengeResultPage",screen,{class:"page"});
+	this.title = new PageElement("img","challengeResultPageTitle",this,{src:img.challengeResultTitle.src});
+	this.resultBox = new PageDiv("challengeResultPageResultBox",this);
+	this.retryButton = new PageButton(
+		"challengeResultPageRetryButton",this,{text:"Retry",class:"pageButton_left"});
+	this.continueButton = new PageButton(
+		"challengeResultPageContinueButton",this,{text:"Continue",class:"pageButton_right"});
+
+	this.changeNameWindow = new PageDiv("challengeResultChangeNameWindow",this,{class:"normalPopupWindow"});
+	this.changeNameWindow.title = new PageElement("h3","changeNameWindowTitle",this.changeNameWindow,{text:"请输入新的名字"});
+	this.changeNameWindow.input = new PageElement("input","changeNameWindowInput",this.changeNameWindow,{type:"text"});
+	this.changeNameWindow.cancelButton = new PageButton("changeNameWindowCancleButton",this.changeNameWindow,{class:"pageButton_left",text:"取消"});
+	this.changeNameWindow.agreeButton = new PageButton("changeNameWindowAgreeButton",this.changeNameWindow,{class:"pageButton_right",text:"确认"});
+	this.changeNameWindow.J.hide();
+
+	var self = this;
+	this.continueButton.node.onmouseup
+		= this.retryButton.node.ontouchend= function (){
+			self.screen.showChallenge();
+		} ;
+	this.retryButton.node.onmouseup
+		= this.retryButton.node.ontouchend =  function (){
+			self.screen.startStage(stageName);
+		}
+	this.node.ontouchstart
+		= this.node.ontouchmove
+		= this.node.ontouchend = function (e){
+			e.preventDefault();
+		}
+	
+	this.handleResult(stageName,stageResult);
+}
+ChallengeResultPage.prototype.handleResult = function (stageName,stageResult){
+	var storyData = this.game.db.story.getDataByName(stageName);
+	var userData = this.game.user.getUserData();
+	this.resultBox.stageTitle = new PageElement(
+		"h2","challengeResultStageTitle",this.resultBox,{text:storyData.title});
+	this.resultBox.stagePic = new PageElement(
+		"img","challengeResultStagePic",this.resultBox,{src:storyData.pic.src});
+	
+	this.resultBox.score = new PageElement(
+		"h3","challengeResultScore",this.resultBox,{text:"您的分数 ： "+stageResult.score});
+	var time = Utils.changeSecTimeToMin(stageResult.time);
+	this.resultBox.time = new PageElement(
+		"h3","challengeResultTime",this.resultBox,{text:"通关时间 ： "+time.min+"分"+time.sec+"秒"});
+	
+	this.resultBox.userNameBox = new PageDiv("challengeResultUserNameBox",this.resultBox);
+	
+	this.resultBox.userNameBox.title = new PageElement("h3","challengeResultUserNameTitle",this.resultBox.userNameBox,{text:"你的名字 ： "});
+
+	this.resultBox.userNameBox.userName = new PageElement("p","challengeResultUserName",this.resultBox.userNameBox,{text:userData.userName});
+	
+	this.resultBox.recordBox = new PageDiv(
+		"challengeResultRecordBox",this.resultBox);
+
+	if(!stageName) return;
+	var score = stageResult.score;
+	var stageData = this.game.db.stage.getDataByName(stageName);
+	var stageNo = stageData.stageNo;
+	this.record = userData.challengeScore[stageName];
+	this.rankIndex = -1;
+
+	this.newRecord = {
+		score:score,
+		name:userData.userName,
+		time:stageResult.time,
+	};
+	if(this.record.length == 0){
+		this.rankIndex = 0;
+		this.record.push(this.newRecord);
+	}else{
+		for (var i = 0; i < this.record.length; i++){
+			if(score > this.record[i].score){
+				this.record.splice(i,0,this.newRecord);
+				this.rankIndex = i;
+				if(this.record.length > 10){
+					this.record.splice(10,this.record.length-1);
+				}
+				break;
+			}
+			if(score == this.record[i].score
+			   && stageResult.time <= this.record[i].time){
+				this.record.splice(i,0,this.newRecord);
+				this.rankIndex = i;
+				if(this.record.length < 10){
+					this.record.splice(10,this.record.length-1);
+				}
+				break;
+			}
+		}
+		if(this.rankIndex == -1 && this.record.length < 10){
+			this.rankIndex = this.record.push(this.newRecord)-1;
+		}
+	}
+	this.game.user.updateUserData();
+	this.postRecord();
+	
+}
+ChallengeResultPage.prototype.postRecord = function (){
+	if(this.record.length > 10){
+		this.record.splice(10,this.record.length-1);
+	}
+	this.resultBox.recordBox.title = new PageElement(
+		"h4","challengeResultRecordBoxTitle",this.resultBox.recordBox,{text:"Top 10"});
+	var headerRankBox = new  PageDiv(
+		"challengeRankBoxHeader",this.resultBox.recordBox,
+		{class:"challengeResult_rankBox"});
+	headerRankBox.num = new PageElement("p",headerRankBox.id+"Num",headerRankBox,{class:"challengeResultRankNum",text:"名次"});
+	headerRankBox.name = new PageElement("p",headerRankBox.id+"Name",headerRankBox,{class:"challengeResultRankName",text:"玩家"});
+
+	headerRankBox.score = new PageElement("p",headerRankBox.id+"Score",headerRankBox,{class:"challengeResultRankScore",text:"分数"});
+	headerRankBox.time = new PageElement("p",headerRankBox.id+"Time",headerRankBox,{class:"challengeResultRankTime",text:"时间"});
+
+	for (var i = 0; i < this.record.length; i++){
+		if(i == this.rankIndex){
+			var rankBox = new PageDiv(
+				"challengeRankBox"+(i+1),this.resultBox.recordBox,
+				{class:"challengeResult_rankBox"});
+			rankBox.J.addClass("challengeResult_nowRankBox");
+		}else{
+			var rankBox = new PageDiv(
+				"cahllengeRankBox"+(i+1),this.resultBox.recordBox,{class:"challengeResult_rankBox"});
+		}
+		rankBox.num = new PageElement("p",rankBox.id+"Num",rankBox,{class:"challengeResultRankNum",text:Utils.getNumberString(i+1)});
+		rankBox.name = new PageElement("p",rankBox.id+"Name",rankBox,{class:"challengeResultRankName",text:this.record[i].name});
+
+		rankBox.score = new PageElement("p",rankBox.id+"Score",rankBox,{class:"challengeResultRankScore",text:this.record[i].score});
+		var time = Utils.changeSecTimeToMin(this.record[i].time);
+		rankBox.time = new PageElement("p",rankBox.id+"Time",rankBox,{class:"challengeResultRankTime",text:time.min+"分"+time.sec+"秒"});
+	}	
+}
+ChallengeResultPage.prototype.show = function (){
+	this.J.show();
+}
