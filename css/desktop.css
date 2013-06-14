@@ -59,41 +59,41 @@ a:hover{
     margin-bottom:8px;
 }
 #soundSwitch{
-    background:url("./img/desktopUI/soundOn.png") no-repeat 0 0;
+    background:url("../img/desktopUI/soundOn.png") no-repeat 0 0;
     background-size:100% 100%;
 }
 #soundSwitch:hover{
-    background-image:url("./img/desktopUI/soundOn-active.png");
+    background-image:url("../img/desktopUI/soundOn-active.png");
 }
 
 #soundSwitch.switchOff{
-    background:url("./img/desktopUI/soundOff.png") no-repeat 0 0;
+    background:url("../img/desktopUI/soundOff.png") no-repeat 0 0;
     background-size:100% 100%;
 }
 #soundSwitch.switchOff:hover{
-    background-image:url("./img/desktopUI/soundOff-active.png");
+    background-image:url("../img/desktopUI/soundOff-active.png");
 }
 
 #helpButton{
-    background:url("./img/desktopUI/help.png") no-repeat 5% 8px;
+    background:url("../img/desktopUI/help.png") no-repeat 5% 8px;
     background-size:90% 90%;
 }
 #helpButton:hover{
-    background-image:url("./img/desktopUI/help-active.png");
+    background-image:url("../img/desktopUI/help-active.png");
 }
 #shareButton{
-    background:url("./img/desktopUI/share.png") no-repeat 0 0;
+    background:url("../img/desktopUI/share.png") no-repeat 0 0;
     background-size:100% 100%;
 }
 #shareButton:hover{
-    background-image:url("./img/desktopUI/share-active.png");
+    background-image:url("../img/desktopUI/share-active.png");
 }
 #aboutButton{
-    background:url("./img/desktopUI/uniqueLogo.png") no-repeat 0 0;
+    background:url("../img/desktopUI/uniqueLogo.png") no-repeat 0 0;
     background-size:100% 100%;
 }
 #aboutButton:hover{
-    background-image:url("./img/desktopUI/uniqueLogo-active.png");
+    background-image:url("../img/desktopUI/uniqueLogo-active.png");
 }
 
 .shareButtons{
@@ -160,11 +160,11 @@ a:hover{
     top:10px;
     width:45px;
     height:45px;
-    background:url("./img/desktopUI/closeButton.png") no-repeat 0 0;
+    background:url("../img/desktopUI/closeButton.png") no-repeat 0 0;
     background-size:100% 100%;
 }
 #extraPage #extraPageCloseButton:hover{
-    background-image:url("./img/desktopUI/closeButton-active.png");
+    background-image:url("../img/desktopUI/closeButton-active.png");
 }
 #aboutBox,#helpBox{
     width:100%;

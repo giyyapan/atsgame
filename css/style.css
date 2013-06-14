@@ -1,6 +1,6 @@
 @font-face {
 	font-family: MyFont;
-	src: url("./font/POORICH.TTF") /* TTF file for CSS3 browsers */
+	src: url("../font/POORICH.TTF") /* TTF file for CSS3 browsers */
 }
 button:hover{
 	cursor:pointer;
@@ -30,7 +30,7 @@ body{
 	position:relative;
 	margin:auto;
 	
-	background:url("./img/mainScreenUI/texture_dark.png") repeat 0 0;
+	background:url("../img/mainScreenUI/texture_dark.png") repeat 0 0;
 }
 h2{
 	font-size:26px;
@@ -155,7 +155,7 @@ h2{
 	height:69px;
 }
 #exitBoxRestartButton {
-	background:url("./img/mainScreenUI/button_center.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center.png") no-repeat 0 0;
 	padding:0;
 	text-align:center;
 	display:block;
@@ -166,22 +166,22 @@ h2{
 	height:53px;
 }
 #exitBoxRestartButton:active {
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 #exitBoxRestartButton:hover {
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 
 #exitBoxExitButton,#resetWindowAgreeButton{
-	background:url("./img/mainScreenUI/button_left.png");
+	background:url("../img/mainScreenUI/button_left.png");
 	float:left;
 	margin-left:4%;
 }
 #exitBoxExitButton:active,#resetWindowAgreeButton:active{
-	background:url("./img/mainScreenUI/button_left-active.png");
+	background:url("../img/mainScreenUI/button_left-active.png");
 }
 #exitBoxExitButton:hover,#resetWindowAgreeButton:hover{
-	background:url("./img/mainScreenUI/button_left-active.png");
+	background:url("../img/mainScreenUI/button_left-active.png");
 }
 
 #exitBoxCancelButton,#resetWindowCancelButton{
@@ -189,13 +189,13 @@ h2{
 	margin-right:4%;
 	padding-left:0;
 	padding-right:25px;
-	background:url("./img/mainScreenUI/button_right.png");
+	background:url("../img/mainScreenUI/button_right.png");
 }
 #exitBoxCancelButton:active,#resetWindowCancelButton:active{
-	background:url("./img/mainScreenUI/button_right-active.png");
+	background:url("../img/mainScreenUI/button_right-active.png");
 }
 #exitBoxCancelButton:hover,#resetWindowCancelButton:hover{
-	background:url("./img/mainScreenUI/button_right-active.png");
+	background:url("../img/mainScreenUI/button_right-active.png");
 }
 
 #canvasStoryBox img{
@@ -248,7 +248,7 @@ h2{
 	margin-top:14%;
 	width:440px;
 	//height:580px;
-	background:url("./img/mainScreenUI/texture.png") repeat 0 0;
+	background:url("../img/mainScreenUI/texture.png") repeat 0 0;
 	z-index:100;
 	text-align:center;
 	overflow:hidden;
@@ -313,7 +313,7 @@ h2{
 	}
 }
 #mapPopupWindow #mapPopupWindowContinueButton{
-	background:url("./img/mainScreenUI/button_center.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center.png") no-repeat 0 0;
 	position:relative;
 	padding:0;
 	margin:auto;
@@ -322,14 +322,14 @@ h2{
 	height:53px;
 }
 #mapPopupWindow #mapPopupWindowContinueButton:active{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 #mapPopupWindow #mapPopupWindowContinueButton:hover{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 
 #mapPopupWindowHeader{
-	background:url("./img/mainScreenUI/mapHeader.png") repeat 0 0;
+	background:url("../img/mainScreenUI/mapHeader.png") repeat 0 0;
 	display:block;
 	width:440px;
 	height:59px;
@@ -375,16 +375,16 @@ h2{
 	left:5px;
 }
 #mapPopupWindow #mapPopupWindowEnterButton{
-	background:url("./img/mainScreenUI/button_right.png");
+	background:url("../img/mainScreenUI/button_right.png");
 	padding-right:30px;
 	padding-left:0;
 	right:5px;
 }
 #mapPopupWindow #mapPopupWindowEnterButton:active{
-	background:url("./img/mainScreenUI/button_right-active.png");
+	background:url("../img/mainScreenUI/button_right-active.png");
 }
 #mapPopupWindow #mapPopupWindowEnterButton:hover{
-	background:url("./img/mainScreenUI/button_right-active.png");
+	background:url("../img/mainScreenUI/button_right-active.png");
 }
 
 #systemPage p, #systemPage h3{
@@ -401,7 +401,7 @@ h2{
 }
 
 #resetButton,#changeUserButton{
-	background:url("./img/mainScreenUI/button_center.png");
+	background:url("../img/mainScreenUI/button_center.png");
 	position:relative;
 	margin:auto;
 	margin-top:40px;
@@ -410,10 +410,10 @@ h2{
 	padding:0;
 }
 #resetButton:active,#changeUserButton:active{
-	background:url("./img/mainScreenUI/button_center-active.png");
+	background:url("../img/mainScreenUI/button_center-active.png");
 }
 #resetButton:hover,#changeUserButton:hover{
-	background:url("./img/mainScreenUI/button_center-active.png");
+	background:url("../img/mainScreenUI/button_center-active.png");
 }
 
 #resetPopupWindow .resetWindowButton{
@@ -457,19 +457,19 @@ h2{
 	line-height:25px;
 }
 .switchButton{
-	background:url("./img/mainScreenUI/mapPoint_locked.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/mapPoint_locked.png") no-repeat 0 0;
 	width:150px;
 	height:50px;
 }
 .switchButton:active{
-	background:url("./img/mainScreenUI/mapPoint_next.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/mapPoint_next.png") no-repeat 0 0;
 }
 .switchButton:hover{
-	background:url("./img/mainScreenUI/mapPoint_next.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/mapPoint_next.png") no-repeat 0 0;
 }
 
 .switchOn{
-	background:url("./img/mainScreenUI/mapPoint_next-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/mapPoint_next-active.png") no-repeat 0 0;
 }
 #resourceContainer{
 	width:100px;
@@ -515,7 +515,7 @@ h2{
 	border:2px solid black;
 }
 #mainScreen{
-	background:url("./img/mainScreenUI/texture.png") repeat 0 0;
+	background:url("../img/mainScreenUI/texture.png") repeat 0 0;
 	//-webkit-box-shadow:0 0 30px rgba(20,20,20,0.9) inset;
 }
 .pageBackground{
@@ -581,7 +581,7 @@ h2{
 #mapPage{
 	position:absolute;
 	background-color:rgba(156,10,10,0.3);
-	background-image:url("./img/mainScreenUI/map.gif");
+	background-image:url("../img/mainScreenUI/map.gif");
 	width:1080px;
 	height:960px;
 }
@@ -603,7 +603,7 @@ h2{
 }
 
 button{
-	background:url("./img/mainScreenUI/button_left.png") no-repeat;
+	background:url("../img/mainScreenUI/button_left.png") no-repeat;
 	background-color:none;
 	font-family:MyFont;
 	z-index:100px;
@@ -618,11 +618,11 @@ button{
 	height:69px;
 }
 button:active{
-	background:url("./img/mainScreenUI/button_left-active.png") no-repeat;
+	background:url("../img/mainScreenUI/button_left-active.png") no-repeat;
 	text-shadow:0 0 10px #fff;
 }
 button:hover{
-	background:url("./img/mainScreenUI/button_left-active.png") no-repeat;
+	background:url("../img/mainScreenUI/button_left-active.png") no-repeat;
 	text-shadow:0 0 10px #fff;
 }
 
@@ -644,16 +644,16 @@ button:hover{
 	margin:auto;
 }
 #equipButton{
-	background:url("./img/mainScreenUI/button_right.png");	
+	background:url("../img/mainScreenUI/button_right.png");	
 	position:absolute;
 	padding-right:30px;
 	top:0;
 }
 #equipButton:active{
-	background:url("./img/mainScreenUI/button_right-active.png");	
+	background:url("../img/mainScreenUI/button_right-active.png");	
 }
 #equipButton:hover{
-	background:url("./img/mainScreenUI/button_right-active.png");	
+	background:url("../img/mainScreenUI/button_right-active.png");	
 }
 
 #challengePage{
@@ -690,14 +690,14 @@ button:hover{
 	float:right;
 	/*margin-right:30px;*/
 	margin-right:-8px;
-	background:url("./img/mainScreenUI/arrowButton_right.png") no-repeat right;
+	background:url("../img/mainScreenUI/arrowButton_right.png") no-repeat right;
 }
 #challengeRecordWindowNextButton.challengeResultPage{
 	margin-right:-8px;
 }
 
 #challengeRecordWindowNextButton:hover,#challengeRecordWindowNextButton:active{
-	background:url("./img/mainScreenUI/arrowButton_right_active.png") no-repeat right;
+	background:url("../img/mainScreenUI/arrowButton_right_active.png") no-repeat right;
 	text-shadow: 0 0 10px white;
 }
 
@@ -710,13 +710,13 @@ button:hover{
 	float:left;
 	/*margin-left:30px;*/
 	margin-right:-8px;
-	background:url("./img/mainScreenUI/arrowButton_left.png") no-repeat;
+	background:url("../img/mainScreenUI/arrowButton_left.png") no-repeat;
 }
 #challengeRecordWindowPreviousButton.challengeResultPage{
 	margin-left:-8px;
 }
 #challengeRecordWindowPreviousButton:hover,#challengeRecordWindowPreviousButton:active{
-	background:url("./img/mainScreenUI/arrowButton_left_active.png") no-repeat;
+	background:url("../img/mainScreenUI/arrowButton_left_active.png") no-repeat;
 	text-shadow: 0 0 10px white;
 }
 #challengeRecordWindowCloseButton{
@@ -848,7 +848,7 @@ button:hover{
 }
 .challengeStageEnterButton{
 	float:right;
-	background:url("./img/mainScreenUI/button_center.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center.png") no-repeat 0 0;
 	margin:0;
 	margin-top:135px;
 	margin-right:1px;
@@ -875,10 +875,10 @@ button:hover{
 	margin-left:10px;
 }
 .challengeStageEnterButton:active{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 .challengeStageEnterButton:hover{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 
 .mapPoint_next,.mapPoint_locked,.mapPoint_cleared{
@@ -893,32 +893,32 @@ button:hover{
 }
 
 .mapPoint_next{
-	background:url("./img/mainScreenUI/mapPoint_next.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_next.png") no-repeat;
 }
 .mapPoint_cleared{
-	background:url("./img/mainScreenUI/mapPoint_cleared.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_cleared.png") no-repeat;
 }
 .mapPoint_locked{
-	background:url("./img/mainScreenUI/mapPoint_locked.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_locked.png") no-repeat;
 }
 
 .mapPoint_next:active{
-	background:url("./img/mainScreenUI/mapPoint_next-active.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_next-active.png") no-repeat;
 }
 .mapPoint_cleared:active{
-	background:url("./img/mainScreenUI/mapPoint_cleared-active.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_cleared-active.png") no-repeat;
 }
 .mapPoint_locked:active{
-	background:url("./img/mainScreenUI/mapPoint_locked-active.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_locked-active.png") no-repeat;
 }
 .mapPoint_next:hover{
-	background:url("./img/mainScreenUI/mapPoint_next-active.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_next-active.png") no-repeat;
 }
 .mapPoint_cleared:hover{
-	background:url("./img/mainScreenUI/mapPoint_cleared-active.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_cleared-active.png") no-repeat;
 }
 .mapPoint_locked:hover{
-	background:url("./img/mainScreenUI/mapPoint_locked-active.png") no-repeat;
+	background:url("../img/mainScreenUI/mapPoint_locked-active.png") no-repeat;
 }
 
 #winPageTitle , #losePageTitle, #challengeResultPageTitle{
@@ -966,10 +966,10 @@ button:hover{
 	text-align:left;
 }
 #winPageTitle{
-	//background:url("./img/mainScreenUI/winTitle.png");
+	//background:url("../img/mainScreenUI/winTitle.png");
 }
 #losePageTitle{
-	//background:url("./img/mainScreenUI/loseTitle.png")
+	//background:url("../img/mainScreenUI/loseTitle.png")
 }
 #winPageRewardViewer{
 	width:350px;
@@ -1011,7 +1011,7 @@ button:hover{
 	margin-top:85px;
 }
 #losePageTilte{
-	background:url("./img/mainScreenUI/loseTitle.png");
+	background:url("../img/mainScreenUI/loseTitle.png");
 }
 #challengeResultStageTitle{
 	margin:17px;
@@ -1147,18 +1147,18 @@ button:hover{
 	right:5px;
 	padding:0;
 	padding-right:30px;
-	background:url("./img/mainScreenUI/button_right.png");
+	background:url("../img/mainScreenUI/button_right.png");
 }
 .pageButton_right:active{
-	background:url("./img/mainScreenUI/button_right-active.png");
+	background:url("../img/mainScreenUI/button_right-active.png");
 }
 .pageButton_right:hover{
-	background:url("./img/mainScreenUI/button_right-active.png");
+	background:url("../img/mainScreenUI/button_right-active.png");
 }
 
 .pageButton_center{
 	position:absolute;
-	background:url("./img/mainScreenUI/button_center.png");
+	background:url("../img/mainScreenUI/button_center.png");
 	position:relative;
 	margin:auto;
 	margin-top:10px;
@@ -1167,10 +1167,10 @@ button:hover{
 	padding:0;
 }
 .pageButton_center:active{
-	background:url("./img/mainScreenUI/button_center-active.png");
+	background:url("../img/mainScreenUI/button_center-active.png");
 }
 .pageButton_center:hover{
-	background:url("./img/mainScreenUI/button_center-active.png");
+	background:url("../img/mainScreenUI/button_center-active.png");
 }
 
 #equipPage{
@@ -1273,7 +1273,7 @@ button:hover{
 }
 #equipInfoBoxButton{
 	font-size:20px;
-	background:url("./img/mainScreenUI/button_center.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center.png") no-repeat 0 0;
 	margin:5px;
 	width:139px;
 	height:53px;
@@ -1282,14 +1282,14 @@ button:hover{
 .equipPageTowerEquipedMark{
 }
 #equipInfoBoxButton:active{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 #equipInfoBoxButton:hover{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 
 #equipInfoBox .equipedEquipButton{
-	background:url("./img/mainScreenUI/button_center-active.png") no-repeat 0 0;
+	background:url("../img/mainScreenUI/button_center-active.png") no-repeat 0 0;
 }
 .equipSpellBox{
 	font-size:18px;
