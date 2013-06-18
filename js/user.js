@@ -13,6 +13,7 @@ User.prototype._init = function (game){
 
 }
 User.prototype.getUserData = function (forceSync,callback){
+		var forceSync = true
 		if (!forceSync && this.userData){
 				return this.userData;
 		}
@@ -20,6 +21,7 @@ User.prototype.getUserData = function (forceSync,callback){
 				return false;
 		}
 		var self = this;
+		//sync network request
 		Network.getUserData(false,function (res){
 				self.userData = res.dataJStr;
 				self.userData.userName = res.username;
