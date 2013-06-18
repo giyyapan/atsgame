@@ -63,15 +63,18 @@ Game.prototype.start = function (){
 Game.prototype.initUserData = function (){
 		//this.user.newClearData();
 		//console.log(this.user.getUserData());
+		var self = this
     if (!this.user.getUserData()){
 				//show new user login page
-				
-				this.user.newUserData();
-				localStorage.dataUpdateTime = 1;
-				
-				this.showLoginPage();
+				$("#waitPage").fadeOut(null,function (){
+						self.user.newUserData();
+						localStorage.dataUpdateTime = 1;
+						self.showLoginPage();
+				})
 		}else{
-				Network.showMessage("欢迎回来，"+this.user.getUserData().userName);
+				$("#waitPage").fadeOut(null,function (){
+						Network.showMessage("欢迎回来，"+self.user.getUserData().userName);
+				})
 		}
 }
 Game.prototype.startStage = function (stageName){
