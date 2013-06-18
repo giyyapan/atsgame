@@ -21,7 +21,7 @@ User.prototype.getUserData = function (forceSync,callback){
 				return false;
 		}
 		var self = this;
-		//sync network request
+		//sync Network Request
 		Network.getUserData(false,function (res){
 				self.userData = res.dataJStr;
 				self.userData.userName = res.username;
