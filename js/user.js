@@ -13,7 +13,6 @@ User.prototype._init = function (game){
 
 }
 User.prototype.getUserData = function (forceSync,callback){
-		var forceSync = true
 		if (!forceSync && this.userData){
 				return this.userData;
 		}

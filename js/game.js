@@ -64,7 +64,7 @@ Game.prototype.initUserData = function (){
 		//this.user.newClearData();
 		//console.log(this.user.getUserData());
 		var self = this
-    if (!this.user.getUserData()){
+    if (!this.user.getUserData(true,null)){
 				//show new user login page
 				$("#waitPage").fadeOut(null,function (){
 						self.user.newUserData();
