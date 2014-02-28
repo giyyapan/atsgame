@@ -300,9 +300,9 @@ Stage.prototype.handleStageEvents = function (eventHandler){
 			audio.stopAll();
 			this.ended = true;
 			eventHandler.regist("stageEnded");
-			this.context.clearRect(this.width,this.height);
-			this.uiContext.clearRect(this.width,this.height);
-			this.bgContext.clearRect(this.width,this.height);
+			this.context.clearRect(0,0,this.width,this.height);
+			this.uiContext.clearRect(0,0,this.width,this.height);
+			this.bgContext.clearRect(0,0,this.width,this.height);
 			this.onDraw = function(){};
 
 			this.game.endStage(this.stageName,endStageResult);
@@ -336,9 +336,9 @@ Stage.prototype.handleStageEvents = function (eventHandler){
 		eventHandler.regist("stageEnded");
 		console.log("Stage Ended!");
 		this.ended = true;
-		this.context.clearRect(this.width,this.height);
-		this.uiContext.clearRect(this.width,this.height);
-		this.bgContext.clearRect(this.width,this.height);
+		this.context.clearRect(0,0,this.width,this.height);
+		this.uiContext.clearRect(0,0,this.width,this.height);
+		this.bgContext.clearRect(0,0,this.width,this.height);
 
 		this.game.endStage(this.stageName,endStageResult);
 		this.onDraw = function(){};
@@ -351,9 +351,9 @@ Stage.prototype.handleStageEvents = function (eventHandler){
 		if(eventHandler.listen("stageEnded"))
 			return;
 		this.ended = true;
-		this.context.clearRect(this.width,this.height);
-		this.uiContext.clearRect(this.width,this.height);
-		this.bgContext.clearRect(this.width,this.height);
+		this.context.clearRect(0,0,this.width,this.height);
+		this.uiContext.clearRect(0,0,this.width,this.height);
+		this.bgContext.clearRect(0,0,this.width,this.height);
 		this.game.restartStage(this.stageName);
 		eventHandler.regist("stageEnded");
 		console.log("Stage Restarted!");
